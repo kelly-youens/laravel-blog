@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     /**
+     * @var array
+     */
+    private $validationRules = [
+        'title' => 'required|max:255',
+        'body' => 'required',
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -17,7 +25,7 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
-        return view('posts.index', ['posts' => $posts]);
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -38,10 +46,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'body' => 'required',
-        ]);
+        $validatedData = $request->validate($this->validationRules);
 
         $post = new Post([
             'title' => $validatedData['title'],
@@ -58,45 +63,60 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        // todo: check user has authorisation
+
+        return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        // todo: check user has authorisation
+
+        $validatedData = $request->validate($this->validationRules);
+
+        $post->title = $validatedData['title'];
+        $post->body = $validatedData['body'];
+
+        $post->save();
+
+        return redirect('/posts/' . $post->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        // todo: check user has authorisation
+
+        $post->delete();
+
+        return redirect('/posts');
     }
 }
