@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -46,6 +47,8 @@ class PostController extends Controller
             'title' => $validatedData['title'],
             'body' => $validatedData['body']
         ]);
+
+        $post->user_id = 1; // todo: get authenticated user
 
         $post->save();
 
