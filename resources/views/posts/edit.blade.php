@@ -2,9 +2,10 @@
 @extends('layout')
 
 @section('content')
+    @include('posts.errors')
     <form method="post" action="/posts/{{ $post->id }}">
-        {{ csrf_field() }}
-        {{ method_field('PUT') }}
+        @csrf
+        @method('PUT')
 
         <div class="field">
             <label class="label">Title</label>
@@ -23,13 +24,13 @@
         <div class="field">
             <button class="button" type="submit">Update</button>
         </div>
+    </form>
 
-        <form method="post" action="/posts/{{ $post->id }}">
-            {{ csrf_field() }}
-            {{ method_field('DELETE') }}
-            <div class="field">
-                <button class="button is-danger" type="submit">Delete</button>
-            </div>
-        </form>
+    <form method="post" action="/posts/{{ $post->id }}">
+        @csrf
+        @method('DELETE')
+        <div class="field">
+            <button class="button is-danger" type="submit">Delete</button>
+        </div>
     </form>
 @endsection

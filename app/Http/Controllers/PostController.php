@@ -12,8 +12,8 @@ class PostController extends Controller
      * @var array
      */
     private $validationRules = [
-        'title' => 'required|max:255',
-        'body' => 'required',
+        'title' => ['required', 'min:5', 'max:255'],
+        'body' => ['required'],
     ];
 
     /**

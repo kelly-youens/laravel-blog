@@ -2,9 +2,10 @@
 @extends('layout')
 
 @section('content')
+    @include('posts.errors')
     <form method="post" action="/posts">
 
-        {{ csrf_field() }}
+        @csrf
 
         <div class="field">
             <label class="label">Title</label>
